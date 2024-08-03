@@ -45,7 +45,19 @@ TIM_HandleTypeDef htim16;
 /* USER CODE BEGIN PV */
 // TODO: Define input variables
 
+uint8_t patterns[9][8] = {
+    {1, 1, 1, 0, 1, 0, 0, 1},
+    {1, 1, 0, 1, 0, 0, 1, 0},
+    {1, 0, 1, 0, 0, 1, 0, 0},
+    {0, 1, 0, 0, 1, 0, 0, 0},
+    {1, 0, 0, 1, 0, 0, 0, 0},
+    {0, 0, 1, 0, 0, 0, 0, 0},
+    {0, 1, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0}
+};
 
+uint8_t currentPattern = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
