@@ -1716,18 +1716,18 @@ LOAD C:/ST/STM32CubeIDE_1.15.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 LOAD C:/ST/STM32CubeIDE_1.15.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libm.a
 LOAD C:/ST/STM32CubeIDE_1.15.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v6-m/nofp\libgcc.a
 
-.debug_info     0x00000000     0x8e48
- .debug_info    0x00000000     0x15fb build/main.o
- .debug_info    0x000015fb      0x144 build/stm32f0xx_it.o
- .debug_info    0x0000173f      0x2b5 build/system_stm32f0xx.o
- .debug_info    0x000019f4      0x836 build/stm32f0xx_ll_gpio.o
- .debug_info    0x0000222a      0x833 build/stm32f0xx_hal.o
- .debug_info    0x00002a5d      0x8c6 build/stm32f0xx_hal_cortex.o
- .debug_info    0x00003323      0x6d2 build/stm32f0xx_hal_gpio.o
- .debug_info    0x000039f5     0x4091 build/stm32f0xx_hal_tim.o
- .debug_info    0x00007a86      0x879 build/stm32f0xx_hal_msp.o
- .debug_info    0x000082ff      0xb19 build/stm32f0xx_ll_utils.o
- .debug_info    0x00008e18       0x30 build/startup_stm32f051x8.o
+.debug_info     0x00000000     0x8e44
+ .debug_info    0x00000000     0x15f7 build/main.o
+ .debug_info    0x000015f7      0x144 build/stm32f0xx_it.o
+ .debug_info    0x0000173b      0x2b5 build/system_stm32f0xx.o
+ .debug_info    0x000019f0      0x836 build/stm32f0xx_ll_gpio.o
+ .debug_info    0x00002226      0x833 build/stm32f0xx_hal.o
+ .debug_info    0x00002a59      0x8c6 build/stm32f0xx_hal_cortex.o
+ .debug_info    0x0000331f      0x6d2 build/stm32f0xx_hal_gpio.o
+ .debug_info    0x000039f1     0x4091 build/stm32f0xx_hal_tim.o
+ .debug_info    0x00007a82      0x879 build/stm32f0xx_hal_msp.o
+ .debug_info    0x000082fb      0xb19 build/stm32f0xx_ll_utils.o
+ .debug_info    0x00008e14       0x30 build/startup_stm32f051x8.o
 
 .debug_abbrev   0x00000000     0x1724
  .debug_abbrev  0x00000000      0x39f build/main.o
