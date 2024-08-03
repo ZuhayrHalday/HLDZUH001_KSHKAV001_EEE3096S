@@ -60,6 +60,11 @@ uint8_t patterns[9][8] = {
 uint8_t currentPattern = 0;
 
 void SetLEDs(uint8_t *pattern);
+
+uint8_t button0Pressed = 0;
+uint8_t button1Pressed = 0;
+uint8_t button2Pressed = 0;
+uint8_t button3Pressed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -105,7 +110,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // TODO: Start timer TIM16
-  SetLEDs(patterns[currentPattern]);
   HAL_TIM_Base_Start_IT(&htim16);
   /* USER CODE END 2 */
 
@@ -118,9 +122,19 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
     // TODO: Check pushbuttons to change timer delay
-    
-    
-
+      // Check pushbutton states and adjust timer delay
+      if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_RESET) {
+          __HAL_TIM_SET_AUTORELOAD(&htim16, (1000 / 2) - 1); // 0.5s delay
+      } else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET) {
+          __HAL_TIM_SET_AUTORELOAD(&htim16, (1000 * 2) - 1); // 2s delay
+      } else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == GPIO_PIN_RESET) {
+          __HAL_TIM_SET_AUTORELOAD(&htim16, 1000- 1); // 1s delay
+      } else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET) {
+          currentPattern = 1; // Reset to pattern 1
+          SetLEDs(patterns[currentPattern]);
+      }
+      
+      HAL_Delay(10); // Small delay to debounce the buttons
   }
   /* USER CODE END 3 */
 }
@@ -347,7 +361,7 @@ void SetLEDs(uint8_t *pattern){
 void TIM16_IRQHandler(void)
 {
 	// Acknowledge interrupt
-	//HAL_TIM_IRQHandler(&htim16);
+	HAL_TIM_IRQHandler(&htim16);
 
 	// TODO: Change LED pattern
 	// print something
