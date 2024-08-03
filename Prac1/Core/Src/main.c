@@ -45,7 +45,7 @@ TIM_HandleTypeDef htim16;
 /* USER CODE BEGIN PV */
 // TODO: Define input variables
 
-uint8_t patterns[9][8] = {
+uint8_t pattern[9][8] = {
     {1, 1, 1, 0, 1, 0, 0, 1},
     {1, 1, 0, 1, 0, 0, 1, 0},
     {1, 0, 1, 0, 0, 1, 0, 0},
@@ -65,7 +65,25 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-void TIM16_IRQHandler(void);
+void TIM16_IRQHandler(void){
+  __HAL_TIM_CLEAR_IT(&htim16,TIM_IT_UPDATE);
+
+  
+}
+
+
+void SetLEDs(uint8_t *pattern){
+  //Updates LED Pattern
+  currentPattern = (currentPattern + 1) % 9;
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, pattern[0]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, pattern[1]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, pattern[2]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, pattern[3]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, pattern[4]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, pattern[5]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, pattern[6]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, pattern[7]);
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
