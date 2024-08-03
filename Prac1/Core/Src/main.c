@@ -101,6 +101,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  HAL_TIM_Base_Start_IT(&htim16);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
