@@ -68,7 +68,9 @@ static void MX_TIM16_Init(void);
 void TIM16_IRQHandler(void){
   __HAL_TIM_CLEAR_IT(&htim16,TIM_IT_UPDATE);
 
-  
+  // Update the pattern
+  currentPattern = (currentPattern + 1) % 9;
+  SetLEDs(pattern[currentPattern]);  
 }
 
 
