@@ -45,7 +45,7 @@ TIM_HandleTypeDef htim16;
 /* USER CODE BEGIN PV */
 // TODO: Define input variables
 
-uint8_t pattern[9][8] = {
+uint8_t patterns[9][8] = {
     {1, 1, 1, 0, 1, 0, 0, 1},
     {1, 1, 0, 1, 0, 0, 1, 0},
     {1, 0, 1, 0, 0, 1, 0, 0},
@@ -58,6 +58,8 @@ uint8_t pattern[9][8] = {
 };
 
 uint8_t currentPattern = 0;
+
+void SetLEDs(uint8_t *pattern);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,27 +67,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-void TIM16_IRQHandler(void){
-  __HAL_TIM_CLEAR_IT(&htim16,TIM_IT_UPDATE);
-
-  // Update the pattern
-  currentPattern = (currentPattern + 1) % 9;
-  SetLEDs(pattern[currentPattern]);  
-}
-
-
-void SetLEDs(uint8_t *pattern){
-  //Updates LED Pattern
-  currentPattern = (currentPattern + 1) % 9;
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, pattern[0]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, pattern[1]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, pattern[2]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, pattern[3]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, pattern[4]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, pattern[5]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, pattern[6]);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, pattern[7]);
-}
+void TIM16_IRQHandler(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -101,7 +83,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  HAL_TIM_Base_Start_IT(&htim16);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -124,7 +105,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // TODO: Start timer TIM16
-
+  SetLEDs(patterns[currentPattern]);
+  HAL_TIM_Base_Start_IT(&htim16);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -350,19 +332,31 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void SetLEDs(uint8_t *pattern){
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, pattern[0]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, pattern[1]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, pattern[2]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, pattern[3]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, pattern[4]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, pattern[5]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, pattern[6]);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, pattern[7]);
+}
 
 // Timer rolled over
 void TIM16_IRQHandler(void)
 {
 	// Acknowledge interrupt
-	HAL_TIM_IRQHandler(&htim16);
+	//HAL_TIM_IRQHandler(&htim16);
 
 	// TODO: Change LED pattern
 	// print something
+	__HAL_TIM_CLEAR_IT(&htim16, TIM_IT_UPDATE);
 
-  
+	// Update the pattern
+	currentPattern = (currentPattern + 1) % 9;
+	SetLEDs(patterns[currentPattern]);
 }
-
 /* USER CODE END 4 */
 
 /**
