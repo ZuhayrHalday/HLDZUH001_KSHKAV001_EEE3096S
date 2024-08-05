@@ -125,6 +125,10 @@ int main(void)
       // Check pushbutton states and adjust timer delay
       if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_RESET) {
           __HAL_TIM_SET_AUTORELOAD(&htim16, (1000 / 2) - 1); // 0.5s delay
+      } else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET) {
+          __HAL_TIM_SET_AUTORELOAD(&htim16, (1000 * 2) - 1); // 2s delay
+      }else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == GPIO_PIN_RESET) {
+          __HAL_TIM_SET_AUTORELOAD(&htim16, 1000- 1); // 1s delay
       }
   }
   /* USER CODE END 3 */
