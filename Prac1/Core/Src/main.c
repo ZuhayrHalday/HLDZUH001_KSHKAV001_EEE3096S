@@ -129,7 +129,11 @@ int main(void)
           __HAL_TIM_SET_AUTORELOAD(&htim16, (1000 * 2) - 1); // 2s delay
       }else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == GPIO_PIN_RESET) {
           __HAL_TIM_SET_AUTORELOAD(&htim16, 1000- 1); // 1s delay
+      }else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET) {
+          currentPattern = 1; // Reset to pattern 1
+          SetLEDs(patterns[currentPattern]);
       }
+
   }
   /* USER CODE END 3 */
 }
