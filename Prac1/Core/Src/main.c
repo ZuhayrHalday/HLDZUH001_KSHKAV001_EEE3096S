@@ -134,6 +134,8 @@ int main(void)
           SetLEDs(patterns[currentPattern]);
       }
 
+      HAL_Delay(10); // Small delay to debounce the buttons
+
   }
   /* USER CODE END 3 */
 }
