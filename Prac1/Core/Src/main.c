@@ -46,7 +46,7 @@ TIM_HandleTypeDef htim16;
 // TODO: Define input variables
 
 uint8_t patterns[9][8] = {
-	{0, 0, 0, 0, 0, 0, 0, 0},	
+	  {0, 0, 0, 0, 0, 0, 0, 0},	
     {1, 1, 1, 0, 1, 0, 0, 1},
     {1, 1, 0, 1, 0, 0, 1, 0},
     {1, 0, 1, 0, 0, 1, 0, 0},
@@ -55,16 +55,12 @@ uint8_t patterns[9][8] = {
     {0, 0, 1, 0, 0, 0, 0, 0},
     {0, 1, 0, 0, 0, 0, 0, 0},
     {1, 0, 0, 0, 0, 0, 0, 0}
-};
+}; //9x8 2D Array to represent 9 patters of 8 LEDs
 
-uint8_t currentPattern = 0;
+uint8_t currentPattern = 0; //Counter variable to cycle through the 9 patterns
 
-void SetLEDs(uint8_t *pattern);
+void SetLEDs(uint8_t *pattern); //Private function to write a pattern to all 8 LEDs
 
-uint8_t button0Pressed = 0;
-uint8_t button1Pressed = 0;
-uint8_t button2Pressed = 0;
-uint8_t button3Pressed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -356,7 +352,7 @@ void SetLEDs(uint8_t *pattern){
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, pattern[5]);
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, pattern[6]);
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, pattern[7]);
-}
+} //Uses HAL to write each state in an array to the 8 LEDs
 
 // Timer rolled over
 void TIM16_IRQHandler(void)
@@ -366,11 +362,11 @@ void TIM16_IRQHandler(void)
 
 	// TODO: Change LED pattern
 	// print something
-	__HAL_TIM_CLEAR_IT(&htim16, TIM_IT_UPDATE);
+	__HAL_TIM_CLEAR_IT(&htim16, TIM_IT_UPDATE); //Clearing the interrupt flag
 
 	// Update the pattern
-	currentPattern = (currentPattern + 1) % 9;
-	SetLEDs(patterns[currentPattern]);
+	currentPattern = (currentPattern + 1) % 9; //counter cycles between 0 and 8
+	SetLEDs(patterns[currentPattern]); //writes the nth pattern to the LEDs
 }
 /* USER CODE END 4 */
 
