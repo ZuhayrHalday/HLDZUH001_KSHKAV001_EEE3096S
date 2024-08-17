@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "lcd_stm32f0.h"
 #include "stm32f0xx.h"
 /* USER CODE END Includes */
 
@@ -33,9 +34,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 // TODO: Add values for below variables
-#define NS        // Number of samples in LUT
-#define TIM2CLK   // STM Clock frequency
-#define F_SIGNAL  // Frequency of output analog signal
+#define NS 128        // Number of samples in LUT
+#define TIM2CLK 8000000   // STM Clock frequency
+#define F_SIGNAL 1000  // Frequency of output analog signal
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,7 +58,7 @@ uint32_t triangle_LUT[NS] = {0, 16, 32, 48, 64, 81, 97, 113, 129, 145, 161, 177,
 
 // TODO: Equation to calculate TIM2_Ticks
 
-uint32_t TIM2_Ticks = 0; // How often to write new LUT value
+uint32_t TIM2_Ticks = TIM2CLK / (F_SIGNAL * NS); // How often to write new LUT value
 uint32_t DestAddress = (uint32_t) &(TIM3->CCR3); // Write LUT TO TIM3->CCR3 to modify PWM duty cycle
 /* USER CODE END PV */
 
@@ -108,19 +109,20 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // TODO: Start TIM3 in PWM mode on channel 3
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
 
 
   // TODO: Start TIM2 in Output Compare (OC) mode on channel 1.
-
+  HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);
 
   // TODO: Start DMA in IT mode on TIM2->CH1; Source is LUT and Dest is TIM3->CCR3; start with Sine LUT
-
+  HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
 
   // TODO: Write current waveform to LCD ("Sine")
-  delay(3000);
+  init_LCD();
 
   // TODO: Enable DMA (start transfer from LUT to CCR)
-
+  __HAL_TIM_ENABLE_DMA(&htim3, TIM_DMA_CC3);
 
   /* USER CODE END 2 */
 
@@ -346,12 +348,33 @@ static void MX_GPIO_Init(void)
 void EXTI0_1_IRQHandler(void)
 {
 	// TODO: Debounce using HAL_GetTick()
-
+	static uint32_t lastPress = 0;
+	uint32_t currentPress = HAL_GetTick();
 
 	// TODO: Disable DMA transfer and abort IT, then start DMA in IT mode with new LUT and re-enable transfer
 	// HINT: Consider using C's "switch" function to handle LUT changes
+	if ((currentPress - lastPress) > 200) {  // Debounce (200ms delay)
+		static int currentWave = 0;
+		HAL_DMA_Abort_IT(&hdma_tim2_ch1); // Stop DMA transfer
 
+		// Cycle through the waveforms
+		switch (currentWave) {
+			case 0:
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
+				currentWave = 1;
+				break;
+			case 1:
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
+				currentWave = 2;
+				break;
+			default:
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
+				currentWave = 0;
+				break;
+		}
+	}
 
+	lastPress = currentPress;
 
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
 }
