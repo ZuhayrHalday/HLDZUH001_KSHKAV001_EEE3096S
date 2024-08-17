@@ -120,6 +120,7 @@ int main(void)
 
   // TODO: Write current waveform to LCD ("Sine")
   init_LCD();
+  lcd_putstring("Sine");
 
   // TODO: Enable DMA (start transfer from LUT to CCR)
   __HAL_TIM_ENABLE_DMA(&htim3, TIM_DMA_CC3);
