@@ -118,11 +118,12 @@ int main(void)
   HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
 
   // TODO: Write current waveform to LCD ("Sine")
+  delay(3000);
   init_LCD();
   lcd_putstring("Sine");
 
   // TODO: Enable DMA (start transfer from LUT to CCR)
-  __HAL_TIM_ENABLE_DMA(&htim3, DestAddress);
+  __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 
   /* USER CODE END 2 */
 
@@ -355,26 +356,33 @@ void EXTI0_1_IRQHandler(void)
 	// HINT: Consider using C's "switch" function to handle LUT changes
 	if ((currentPress - lastPress) > 200) {  // Debounce (200ms delay)
 		static int currentWave = 0;
+		__HAL_TIM_DISABLE_DMA(&htim2, TIM_DMA_CC1);
 		HAL_DMA_Abort_IT(&hdma_tim2_ch1); // Stop DMA transfer
 
 		// Cycle through the waveforms
 		switch (currentWave) {
 			case 0:
-				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
+				delay(3000);
 				lcd_command(CLEAR);
 				lcd_putstring("Saw");
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
+				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 				currentWave = 1;
 				break;
 			case 1:
-				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
+				delay(3000);
 				lcd_command(CLEAR);
 				lcd_putstring("Triangle");
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
+				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 				currentWave = 2;
 				break;
 			default:
-				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
+				delay(3000);
 				lcd_command(CLEAR);
 				lcd_putstring("Sine");
+				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
+				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 				currentWave = 0;
 				break;
 		}
