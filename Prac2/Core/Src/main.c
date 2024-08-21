@@ -120,7 +120,9 @@ int main(void)
   // TODO: Write current waveform to LCD ("Sine")
   delay(3000);
   init_LCD();
-  lcd_putstring("Waveform: Sine");
+  lcd_putstring("Waveform:");
+  lcd_command(LINE_TWO);
+  lcd_putstring("Sine");
 
   // TODO: Enable DMA (start transfer from LUT to CCR)
   __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
@@ -364,25 +366,31 @@ void EXTI0_1_IRQHandler(void)
 			case 0:
 				delay(3000);
 				lcd_command(CLEAR);
-        lcd_putstring("Waveform: Saw");
+				lcd_putstring("Waveform:");
+				lcd_command(LINE_TWO);
+				lcd_putstring("Sawtooth");
 				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
 				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 				currentWave = 1;
 				break;
       
-      case 1:
-      delay(3000);
-      lcd_command(CLEAR);
-      lcd_putstring("Waveform: Triangle");
-      HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
-      __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
-      currentWave = 2;
-      break;
+			  case 1:
+				  delay(3000);
+				  lcd_command(CLEAR);
+				  lcd_putstring("Waveform:");
+				  lcd_command(LINE_TWO);
+				  lcd_putstring("Triangle");
+				  HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
+				  __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
+				  currentWave = 2;
+			  break;
 
       default:
 				delay(3000);
 				lcd_command(CLEAR);
-        lcd_putstring("Waveform: Sine");
+				lcd_putstring("Waveform:");
+				lcd_command(LINE_TWO);
+				lcd_putstring("Sine");
 				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
 				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 				currentWave = 0;
