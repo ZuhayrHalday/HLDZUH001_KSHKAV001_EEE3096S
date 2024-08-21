@@ -1,0 +1,19 @@
+../../Drivers/CMSIS/Include/core_cm0.h:623:22:__NVIC_EnableIRQ	2
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:746:22:LL_RCC_HSI_Enable	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:766:26:LL_RCC_HSI_IsReady	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:792:22:LL_RCC_HSI_SetCalibTrimming	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:1098:22:LL_RCC_SetSysClkSource	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:1114:26:LL_RCC_GetSysClkSource	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:1134:22:LL_RCC_SetAHBPrescaler	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:1150:22:LL_RCC_SetAPB1Prescaler	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_bus.h:225:22:LL_AHB1_GRP1_EnableClock	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_system.h:1778:22:LL_FLASH_SetLatency	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_system.h:1790:26:LL_FLASH_GetLatency	1
+../../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_gpio.h:867:22:LL_GPIO_ResetOutputPin	1
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:83:5:main	5
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:143:6:SystemClock_Config	5
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:180:13:MX_TIM16_Init	2
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:212:13:MX_GPIO_Init	1
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:346:6:SetLEDs	1
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:358:6:TIM16_IRQHandler	1
+C:/Users/mrkew/OneDrive - University of Cape Town/UCT/3rd Year/2nd Semester/EEE3096S/Practicals/HLDZUH001_KSHKAV001_EEE3096S/Prac1/Core/Src/main.c:377:6:Error_Handler	1

@@ -24,6 +24,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr_ex.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h \
+ Drivers/STM32F0xx_HAL_Driver/Inc/lcd_stm32f0.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_crs.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_bus.h \
@@ -34,7 +35,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_pwr.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_dma.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_gpio.h \
- Core/Inc/lcd_stm32f0.h
+ Core/Inc/stm32f0xx_lcd.h
 Core/Inc/main.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h:
 Core/Inc/stm32f0xx_hal_conf.h:
@@ -63,6 +64,7 @@ Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr_ex.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h:
+Drivers/STM32F0xx_HAL_Driver/Inc/lcd_stm32f0.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_crs.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_rcc.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_bus.h:
@@ -73,4 +75,4 @@ Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_utils.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_pwr.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_dma.h:
 Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_ll_gpio.h:
-Core/Inc/lcd_stm32f0.h:
+Core/Inc/stm32f0xx_lcd.h:

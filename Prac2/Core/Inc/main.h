@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
+#include "lcd_stm32f0.h"
 #include "stm32f0xx_ll_crs.h"
 #include "stm32f0xx_ll_rcc.h"
 #include "stm32f0xx_ll_bus.h"

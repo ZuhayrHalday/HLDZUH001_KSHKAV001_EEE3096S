@@ -18,12 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-#include "lcd_stm32f0.h"
 #include "stm32f0xx.h"
+#include "stm32f0xx_lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -36,7 +35,7 @@
 // TODO: Add values for below variables
 #define NS 128        // Number of samples in LUT
 #define TIM2CLK 8000000   // STM Clock frequency
-#define F_SIGNAL 1000  // Frequency of output analog signal
+#define F_SIGNAL 100  // Frequency of output analog signal
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -123,7 +122,7 @@ int main(void)
   lcd_putstring("Sine");
 
   // TODO: Enable DMA (start transfer from LUT to CCR)
-  __HAL_TIM_ENABLE_DMA(&htim3, TIM_DMA_CC3);
+  __HAL_TIM_ENABLE_DMA(&htim3, DestAddress);
 
   /* USER CODE END 2 */
 
@@ -196,7 +195,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 100;
+  htim2.Init.Period = TIM2_Ticks - 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -362,14 +361,20 @@ void EXTI0_1_IRQHandler(void)
 		switch (currentWave) {
 			case 0:
 				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
+				lcd_command(CLEAR);
+				lcd_putstring("Saw");
 				currentWave = 1;
 				break;
 			case 1:
 				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
+				lcd_command(CLEAR);
+				lcd_putstring("Triangle");
 				currentWave = 2;
 				break;
 			default:
 				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
+				lcd_command(CLEAR);
+				lcd_putstring("Sine");
 				currentWave = 0;
 				break;
 		}
@@ -379,6 +384,276 @@ void EXTI0_1_IRQHandler(void)
 
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
 }
+void lcd_command(unsigned char command)
+{
+    GPIOC->BSRR |= LCD_RS_RESET;	// Register Select (RS)line low (data sent will now be read as commands);
+
+// Put upper nibble (upper 4-bits) on data lines, command mode
+// DATALINE 7
+    if ((command & 0x80) != 0)		// Select bit 7 of command, if HIGH set Data line 7 (D7)
+    {
+    	GPIOA->BSRR |= LCD_D7_SET;
+    }
+    else				// else RESET D7
+    {
+    	GPIOA->BSRR |= LCD_D7_RESET;
+    }
+// DATALINE 6
+    if ((command & 0x40) != 0)		// Select bit 6 of command, if HIGH set Data line 6 (D6)
+    {
+        GPIOA->BSRR |= LCD_D6_SET;
+    }
+    else				// else RESET D6
+    {
+        GPIOA->BSRR |= LCD_D6_RESET;
+    }
+// DATALINE 5
+    if ((command & 0x20) != 0)		// Select bit 5 of command, if HIGH set Data line 5 (D5)
+    {
+    	GPIOB->BSRR |= LCD_D5_SET;
+    }
+    else				// else RESET D5
+    {
+    	GPIOB->BSRR |= LCD_D5_RESET;
+    }
+// DATALINE 4
+    if ((command & 0x10) != 0)		// Select bit 4 of command, if HIGH set Data line 4 (D4)
+    {
+    	GPIOB->BSRR |= LCD_D4_SET;
+    }
+    else				//  else RESET D4
+    {
+    	GPIOB->BSRR |= LCD_D4_RESET;
+    }
+
+    pulse_strobe ();			// Send data
+
+// lower nibble to data lines
+    if ((command & 0x08) != 0)		// Select bit 3 of command, if HIGH set Data line 7 (D7)
+    {
+    	GPIOA->BSRR |= LCD_D7_SET;
+    }
+    else				// else RESET D7
+    {
+    	GPIOA->BSRR |= LCD_D7_RESET;
+    }
+// DATALINE 6
+    if ((command & 0x04) != 0)		// Select bit 2 of command, if HIGH set Data line 6 (D6)
+    {
+        GPIOA->BSRR |= LCD_D6_SET;
+    }
+    else				//  else RESET D6
+    {
+        GPIOA->BSRR |= LCD_D6_RESET;
+    }
+    // DATALINE 5
+    if ((command & 0x02) != 0)		// Select bit 1 of command, if HIGH set Data line 5 (D5)
+    {
+    	GPIOB->BSRR |= LCD_D5_SET;
+    }
+    else				//  else RESET D5
+    {
+    	GPIOB->BSRR |= LCD_D5_RESET;
+    }
+    // DATALINE 4
+    if ((command & 0x01) != 0)		// Select bit 0 of command, if HIGH set Data line 4 (D4)
+    {
+    	GPIOB->BSRR |= LCD_D4_SET;
+    }
+    else				//  else RESET D4
+    {
+    	GPIOB->BSRR |= LCD_D4_RESET;
+    }
+
+    pulse_strobe();			// Send data
+    delay(3000);
+}
+
+//====================================================================
+// INITIALISE LCD - LCD_Init()
+//====================================================================
+// DESCRIPTION: This function sets up the port lines for the LCD and
+//              intialises the module for use.
+//====================================================================
+// LCD SETUP:     - 4 bit mode      (Upper 4 data lines D4-D7 used)
+//                - Two lines used
+//                - Flashing cursor
+//====================================================================
+
+void init_LCD(void)
+{
+    RCC->AHBENR |= RCC_AHBENR_GPIOAEN;	// Connect clocks to GPIO A, B and C
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
+    RCC->AHBENR |= RCC_AHBENR_GPIOCEN;
+
+    GPIOA->MODER |= (GPIO_MODER_MODER12_0|GPIO_MODER_MODER15_0); // D6 and D7
+    GPIOB->MODER |= (GPIO_MODER_MODER8_0|GPIO_MODER_MODER9_0);   // D4 and D5
+    GPIOC->MODER |= (GPIO_MODER_MODER14_0|GPIO_MODER_MODER15_0); // RS and EN
+
+    delay(30000);			// Allow the LCD some power up time (~30ms)
+
+    lcd_command(POWER_UP);		// Power up initialization for the lcd
+    lcd_command(FOURBIT_MODE);		// Set LCD into 4 bit mode
+    lcd_command(DISPLAY_ON);		// Turn display on and set up cursor
+    lcd_command(TWOLINE_MODE);		// Set up 2 lines and character size
+    lcd_command(CLEAR);			// Clear display
+}
+
+//====================================================================
+// WRITE A SINGLE CHARACTER TO THE LCD - LCD_PutChar(character)
+//====================================================================
+// DESCRIPTION: Puts a single character on the LCD at the next position
+//              on the screen. The character to be printed is in the input
+//              parameter. For numbers, letters and other common characters
+//              the ASCII code will produce correct display.
+//
+//              Refer to the Hitachi HD44780 datasheet for full character
+//              set information.
+//====================================================================
+
+ void lcd_putchar(unsigned char character)
+{
+	GPIOC->BSRR |= LCD_RS_SET;	// Register Select (RS) line HIGH (data sent will now be read as text);
+// Put upper nibble (upper 4-bits) on data lines, command mode
+// DATALINE 7
+        if ((character & 0x80) != 0) 	// Select bit 7 of command, if HIGH set Data line 7 (D7)
+        {
+        	GPIOA->BSRR |= LCD_D7_SET;
+        }
+        else				//  else RESET D7
+        {
+        	GPIOA->BSRR |= LCD_D7_RESET;
+        }
+        // DATALINE 6
+        if ((character & 0x40) != 0)	// Select bit 6 of command, if HIGH set Data line 6 (D6)
+	{
+            GPIOA->BSRR |= LCD_D6_SET;
+        }
+        else				//  else RESET D6
+
+        {
+            GPIOA->BSRR |= LCD_D6_RESET;
+        }
+// DATALINE 5
+        if ((character & 0x20) != 0)	// Select bit 5 of command, if HIGH set Data line 5 (D5)
+
+        {
+        	GPIOB->BSRR |= LCD_D5_SET;
+	}
+        else				//  else RESET D5
+        {
+        	GPIOB->BSRR |= LCD_D5_RESET;
+        }
+// DATALINE 4
+        if ((character & 0x10) != 0)	// Select bit 4 of command, if HIGH set Data line 4 (D4)
+        {
+        	GPIOB->BSRR |= LCD_D4_SET;
+        }
+        else				// else RESET D4
+        {
+        	GPIOB->BSRR |= LCD_D4_RESET;
+        }
+
+        pulse_strobe ();		// Send data
+
+// lower nibble to data lines
+        if ((character & 0x08) != 0)	// Select bit 3 of command, if HIGH set Data line 7 (D7)
+        {
+        	GPIOA->BSRR |= LCD_D7_SET;
+        }
+        else				// else RESET D7
+        {
+        	GPIOA->BSRR |= LCD_D7_RESET;
+        }
+// DATALINE 6
+        if ((character & 0x04) != 0)	// Select bit 2 of command, if HIGH set Data line 6 (D6)
+	{
+            GPIOA->BSRR |= LCD_D6_SET;
+        }
+        else				// else RESET D6
+
+        {
+            GPIOA->BSRR |= LCD_D6_RESET;
+        }
+// DATALINE 5
+        if ((character & 0x02) != 0)	// Select bit 1 of command, if HIGH set Data line 5 (D5)
+        {
+        	GPIOB->BSRR |= LCD_D5_SET;
+	}
+        else				// else RESET D5
+        {
+        	GPIOB->BSRR |= LCD_D5_RESET;
+        }
+// DATALINE 4
+        if ((character & 0x01) != 0)	// Select bit 0 of command, if HIGH set Data line 4 (D4)
+        {
+        	GPIOB->BSRR |= LCD_D4_SET;
+        }
+        else				//  else RESET D4
+        {
+        	GPIOB->BSRR |= LCD_D4_RESET;
+        }
+
+        pulse_strobe();			// Send data
+}
+
+//====================================================================
+// WRITE A STRING TO THE LCD - LCD_PutString(ptr_String)
+//====================================================================
+// DESCRIPTION: Writes a string to the LCD
+//====================================================================
+
+void lcd_putstring(char *instring)
+{
+    unsigned char count = 0;
+
+    while (instring[count])		// Until the null terminator is reached
+    {
+    	lcd_putchar(instring[count]);	// Write each character to LCD
+	    count++;
+	 }
+}
+
+
+//====================================================================
+// PULSE STROBE - Pulse_Strobe()
+//====================================================================
+// DESCRIPTION: Pulse the strobe line of the LCD to indicate that data is ready.
+//====================================================================
+
+void pulse_strobe(void)
+{
+    delay(20);				// Delay
+
+    GPIOC->BSRR |= LCD_EN_SET;		// pull E (PC15) HIGH
+
+    delay(20);				// Delay
+
+    GPIOC->BSRR |= LCD_EN_RESET;	// Take EN LOW
+
+    delay(20);				// Delay
+
+    GPIOC->BSRR |= LCD_EN_SET;		// Take EN HIGH
+}
+
+
+//====================================================================
+// LOOP DELAY - delay(microseconds)
+//====================================================================
+// DESCRIPTION: A delay used by the LCD functions.
+//====================================================================
+
+void delay(unsigned int microseconds)
+{
+	  volatile unsigned int counter;
+	  microseconds *= 3;
+	  for(counter = 0; counter<microseconds; counter++)
+	  {
+	    __asm("nop");
+	    __asm("nop");
+	  }
+}
+
 /* USER CODE END 4 */
 
 /**
