@@ -1841,47 +1841,47 @@ LOAD C:/ST/STM32CubeIDE_1.15.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_ranges  0x00000878       0x58 build/stm32f0xx_ll_utils.o
  .debug_ranges  0x000008d0       0x20 build/startup_stm32f051x8.o
 
-.debug_line     0x00000000     0xaf83
- .debug_line    0x00000000      0xc74 build/main.o
- .debug_line    0x00000c74      0x370 build/stm32f0xx_it.o
- .debug_line    0x00000fe4      0x335 build/system_stm32f0xx.o
- .debug_line    0x00001319      0x618 build/stm32f0xx_hal.o
- .debug_line    0x00001931      0x4d1 build/stm32f0xx_ll_exti.o
- .debug_line    0x00001e02      0x649 build/stm32f0xx_hal_cortex.o
- .debug_line    0x0000244b      0xb7a build/stm32f0xx_hal_dma.o
- .debug_line    0x00002fc5      0x7b2 build/stm32f0xx_hal_gpio.o
- .debug_line    0x00003777     0x4d54 build/stm32f0xx_hal_tim.o
- .debug_line    0x000084cb     0x1daf build/stm32f0xx_hal_tim_ex.o
- .debug_line    0x0000a27a      0x466 build/stm32f0xx_hal_msp.o
- .debug_line    0x0000a6e0      0x82c build/stm32f0xx_ll_utils.o
- .debug_line    0x0000af0c       0x77 build/startup_stm32f051x8.o
+.debug_line     0x00000000     0xaf7a
+ .debug_line    0x00000000      0xc6b build/main.o
+ .debug_line    0x00000c6b      0x370 build/stm32f0xx_it.o
+ .debug_line    0x00000fdb      0x335 build/system_stm32f0xx.o
+ .debug_line    0x00001310      0x618 build/stm32f0xx_hal.o
+ .debug_line    0x00001928      0x4d1 build/stm32f0xx_ll_exti.o
+ .debug_line    0x00001df9      0x649 build/stm32f0xx_hal_cortex.o
+ .debug_line    0x00002442      0xb7a build/stm32f0xx_hal_dma.o
+ .debug_line    0x00002fbc      0x7b2 build/stm32f0xx_hal_gpio.o
+ .debug_line    0x0000376e     0x4d54 build/stm32f0xx_hal_tim.o
+ .debug_line    0x000084c2     0x1daf build/stm32f0xx_hal_tim_ex.o
+ .debug_line    0x0000a271      0x466 build/stm32f0xx_hal_msp.o
+ .debug_line    0x0000a6d7      0x82c build/stm32f0xx_ll_utils.o
+ .debug_line    0x0000af03       0x77 build/startup_stm32f051x8.o
 
-.debug_str      0x00000000     0x2ee6
- .debug_str     0x00000000      0xe36 build/main.o
-                                0xf36 (size before relaxing)
- .debug_str     0x00000e36       0x9b build/stm32f0xx_it.o
+.debug_str      0x00000000     0x2edd
+ .debug_str     0x00000000      0xe2d build/main.o
+                                0xf2d (size before relaxing)
+ .debug_str     0x00000e2d       0x9b build/stm32f0xx_it.o
                                 0x452 (size before relaxing)
- .debug_str     0x00000ed1       0x86 build/system_stm32f0xx.o
+ .debug_str     0x00000ec8       0x86 build/system_stm32f0xx.o
                                 0x29c (size before relaxing)
- .debug_str     0x00000f57      0x27c build/stm32f0xx_hal.o
+ .debug_str     0x00000f4e      0x27c build/stm32f0xx_hal.o
                                 0x710 (size before relaxing)
- .debug_str     0x000011d3      0x16d build/stm32f0xx_ll_exti.o
+ .debug_str     0x000011ca      0x16d build/stm32f0xx_ll_exti.o
                                 0x3a0 (size before relaxing)
- .debug_str     0x00001340      0x27f build/stm32f0xx_hal_cortex.o
+ .debug_str     0x00001337      0x27f build/stm32f0xx_hal_cortex.o
                                 0x651 (size before relaxing)
- .debug_str     0x000015bf      0x227 build/stm32f0xx_hal_dma.o
+ .debug_str     0x000015b6      0x227 build/stm32f0xx_hal_dma.o
                                 0x64e (size before relaxing)
- .debug_str     0x000017e6      0x123 build/stm32f0xx_hal_gpio.o
+ .debug_str     0x000017dd      0x123 build/stm32f0xx_hal_gpio.o
                                 0x42b (size before relaxing)
- .debug_str     0x00001909      0xde7 build/stm32f0xx_hal_tim.o
+ .debug_str     0x00001900      0xde7 build/stm32f0xx_hal_tim.o
                                0x16a0 (size before relaxing)
- .debug_str     0x000026f0      0x4eb build/stm32f0xx_hal_tim_ex.o
+ .debug_str     0x000026e7      0x4eb build/stm32f0xx_hal_tim_ex.o
                                 0xebc (size before relaxing)
- .debug_str     0x00002bdb       0x37 build/stm32f0xx_hal_msp.o
+ .debug_str     0x00002bd2       0x37 build/stm32f0xx_hal_msp.o
                                 0x86a (size before relaxing)
- .debug_str     0x00002c12      0x2a2 build/stm32f0xx_ll_utils.o
+ .debug_str     0x00002c09      0x2a2 build/stm32f0xx_ll_utils.o
                                 0x632 (size before relaxing)
- .debug_str     0x00002eb4       0x32 build/startup_stm32f051x8.o
+ .debug_str     0x00002eab       0x32 build/startup_stm32f051x8.o
                                  0xb5 (size before relaxing)
 
 .comment        0x00000000       0x43

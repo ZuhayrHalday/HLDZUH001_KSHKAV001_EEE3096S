@@ -35,7 +35,7 @@
 // TODO: Add values for below variables
 #define NS 128        // Number of samples in LUT
 #define TIM2CLK 8000000   // STM Clock frequency
-#define F_SIGNAL 100  // Frequency of output analog signal
+#define F_SIGNAL 200  // Frequency of output analog signal
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/

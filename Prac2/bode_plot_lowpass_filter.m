@@ -13,7 +13,7 @@ C = 150e-9; % Farads
 
 % Plots the experimental magnitude vs frequency data
 figure;
-semilogx(frequencies, magnitude_dB, 'ro');
+semilogx(frequencies, magnitude_dB, 'rx');
 hold on; % Keeps the plot open to overlay the Bode plot
 
 % Generating and plotting the Bode plot for the 1st order low-pass filter
@@ -33,12 +33,12 @@ semilogx(w, mag_dB, 'b-'); % Overlays the Bode plot in blue
 % Adds labels, title, and grid
 xlabel('Frequency (rad/sec)');
 ylabel('Magnitude (dB)');
-title('Magnitude vs Frequency and Bode Plot of 1st Order Low-Pass Filter');
+title('Bode Plot of 1st Order Passive Low-Pass Filter');
 grid on;
 
 % Displays the cutoff frequency
 cutoff_frequency = 1 / (2*pi*R * C);
 disp(['Cutoff Frequency: ', num2str(cutoff_frequency), ' Hz']);
 
-legend('Experimental Data', 'Theoretical Bode Plot', 'Location','southwest');
+legend('Measured Data Points', 'Theoretical Bode Plot', 'Location','southwest');
 hold off; % Releases the plot
