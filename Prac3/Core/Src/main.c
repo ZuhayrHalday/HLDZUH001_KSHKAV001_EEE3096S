@@ -146,29 +146,44 @@ int main(void)
   // TODO: Write all bytes to EEPROM using "write_to_address"
   uint8_t index = 0;
   while(index < 6){
+<<<<<<< HEAD
 	  write_to_address(address, data[index]);
 	  index++;
   }
+=======
+	write_to_address(address, data[index]);
+	index++;
+  }
+  
+>>>>>>> 7b8f3799d360bc9b46e3464655f1a507e97270f0
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
+    {
 
+<<<<<<< HEAD
 	// TODO: Poll ADC
 adc_val = pollADC();//read analogue adc value from potentiometer
 
 	// TODO: Get CRR
   CCR = ADCtoCCR(adc_val);
+=======
+  	// TODO: Poll ADC
+  	  adc_val = pollADC();//read analogue adc value from potentiometer
 
-  // Update PWM value
-	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, CCR);
+  	// TODO: Get CRR
+  	  CCR = ADCtoCCR(adc_val);
 
-    /* USER CODE END WHILE */
+    // Update PWM value
+  	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, CCR);
+>>>>>>> 7b8f3799d360bc9b46e3464655f1a507e97270f0
 
-    /* USER CODE BEGIN 3 */
-  }
+      /* USER CODE END WHILE */
+
+      /* USER CODE BEGIN 3 */
+    }
   /* USER CODE END 3 */
 }
 
@@ -526,6 +541,10 @@ void TIM16_IRQHandler(void)
 // TODO: Complete the writeLCD function
 void writeLCD(char *char_in){
   delay(3000);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7b8f3799d360bc9b46e3464655f1a507e97270f0
   lcd_command(CLEAR);
   lcd_putstring("EEPROM byte:");
   lcd_command(LINE_TWO);
