@@ -59,7 +59,15 @@ TIM_HandleTypeDef htim16;
 /* USER CODE BEGIN PV */
 
 // TODO: Define input variables
+uint32_t current_time = 0;
+uint32_t prev_time = 0;
+uint32_t delay_led = 500; //delay for 500ms
 
+
+//array of 8-bit binary integers
+uint8_t data[6] = {0b10101010, 0b01010101, 0b11001100, 0b00110011, 0b11110000, 0b00001111};
+uint16_t address = 0;//eeeprom address
+uint32_t adc_val;
 
 /* USER CODE END PV */
 
