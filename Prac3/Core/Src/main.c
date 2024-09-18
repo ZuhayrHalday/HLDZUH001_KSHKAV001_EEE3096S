@@ -453,9 +453,27 @@ static void MX_GPIO_Init(void)
 void EXTI0_1_IRQHandler(void)
 {
 	// TODO: Add code to switch LED7 delay frequency
-	
-  
+		current_time = HAL_GetTick();
 
+	//ensures unwanted noise within udration is not registered
+	if((current_time - prev_time)> 200){
+		if(delay_led = 500 ){ //if frequency of led is 2Hz
+			delay_led = 1000;//toggle the frequency of LED by changing delay
+			htim6.Init.Period = delay_led -1;
+		}else if(delay_led = 1000){ //if frequency of led is 1Hz
+			delay_led = 500;
+			htim6.Init.Period = delay_led -1;
+		}
+
+		//update TIM6 with the new period; ensure execution complete
+		    if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+		    {
+		      Error_Handler();
+		    }
+
+	}
+  
+  prev_time = current_time;//update the last time since click
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
 }
 
