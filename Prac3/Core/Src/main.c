@@ -144,28 +144,32 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3); // Start PWM on TIM3 Channel 3
 
   // TODO: Write all bytes to EEPROM using "write_to_address"
-  
+  uint8_t index = 0;
+  while(index < 6){
+	write_to_address(address, data[index]);
+	index++;
+  }
   
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
+    {
 
-	// TODO: Poll ADC
+  	// TODO: Poll ADC
+  	  adc_val = pollADC();//read analogue adc value from potentiometer
 
+  	// TODO: Get CRR
+  	  CCR = ADCtoCCR(adc_val);
 
-	// TODO: Get CRR
-  
+    // Update PWM value
+  	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, CCR);
 
-  // Update PWM value
-	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, CCR);
+      /* USER CODE END WHILE */
 
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  }
+      /* USER CODE BEGIN 3 */
+    }
   /* USER CODE END 3 */
 }
 
@@ -491,19 +495,39 @@ void TIM16_IRQHandler(void)
 	// Acknowledge interrupt
 	HAL_TIM_IRQHandler(&htim16);
 
+	char decimalValue[16];//buffer
+
 	// TODO: Initialise a string to output second line on LCD
 
 
 	// TODO: Change LED pattern; output 0x01 if the read SPI data is incorrect
-	
-  
+	if (address > 5){
+			//reset temp to stay within range of array (from 0 to 6)
+			address= 0;
+		}
+			//validate pattern in EEProm with original
+		if (read_from_address(address)==data[address]){
+
+			snprintf(decimalValue, sizeof(decimalValue), "%d", read_from_address(address));
+			writeLCD(decimalValue);
+
+
+		}
+		else{
+			writeLCD("SPI ERROR!");
+
+				    //set LED7 on (high)
+				    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+		}
+		//iterate tempaddress
+		address++;
 
 }
 
 // TODO: Complete the writeLCD function
 void writeLCD(char *char_in){
   delay(3000);
-	  delay(3000);
+
   lcd_command(CLEAR);
   lcd_putstring("EEPROM byte:");
   lcd_command(LINE_TWO);
@@ -534,7 +558,7 @@ uint32_t ADCtoCCR(uint32_t adc_val){
 
 void ADC1_COMP_IRQHandler(void)
 {
-	//adc_val = HAL_ADC_GetValue(&hadc); // read adc value
+	adc_val = HAL_ADC_GetValue(&hadc); // read adc value
 	HAL_ADC_IRQHandler(&hadc); //Clear flags
 }
 
