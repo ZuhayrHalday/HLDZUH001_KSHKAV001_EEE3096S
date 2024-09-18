@@ -32,10 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-// TODO: Add values for below variables
-#define NS 128        // Number of samples in LUT
-#define TIM2CLK 8000000   // STM Clock frequency
-#define F_SIGNAL 1 // Frequency of output analog signal
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,16 +46,7 @@ TIM_HandleTypeDef htim3;
 DMA_HandleTypeDef hdma_tim2_ch1;
 
 /* USER CODE BEGIN PV */
-// TODO: Add code for global variables, including LUTs
 
-uint32_t Sin_LUT[NS] = {512, 537, 562, 587, 611, 636, 660, 684, 707, 730, 753, 774, 796, 816, 836, 855, 873, 890, 907, 922, 937, 950, 963, 974, 984, 993, 1001, 1008, 1013, 1017, 1021, 1022, 1023, 1022, 1021, 1017, 1013, 1008, 1001, 993, 984, 974, 963, 950, 937, 922, 907, 890, 873, 855, 836, 816, 796, 774, 753, 730, 707, 684, 660, 636, 611, 587, 562, 537, 512, 486, 461, 436, 412, 387, 363, 339, 316, 293, 270, 249, 227, 207, 187, 168, 150, 133, 116, 101, 86, 73, 60, 49, 39, 30, 22, 15, 10, 6, 2, 1, 0, 1, 2, 6, 10, 15, 22, 30, 39, 49, 60, 73, 86, 101, 116, 133, 150, 168, 187, 207, 227, 249, 270, 293, 316, 339, 363, 387, 412, 436, 461, 486};
-uint32_t saw_LUT[NS] = {0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 81, 89, 97, 105, 113, 121, 129, 137, 145, 153, 161, 169, 177, 185, 193, 201, 209, 217, 226, 234, 242, 250, 258, 266, 274, 282, 290, 298, 306, 314, 322, 330, 338, 346, 354, 362, 371, 379, 387, 395, 403, 411, 419, 427, 435, 443, 451, 459, 467, 475, 483, 491, 499, 507, 516, 524, 532, 540, 548, 556, 564, 572, 580, 588, 596, 604, 612, 620, 628, 636, 644, 652, 661, 669, 677, 685, 693, 701, 709, 717, 725, 733, 741, 749, 757, 765, 773, 781, 789, 797, 806, 814, 822, 830, 838, 846, 854, 862, 870, 878, 886, 894, 902, 910, 918, 926, 934, 942, 951, 959, 967, 975, 983, 991, 999, 1007, 1015, 1023};
-uint32_t triangle_LUT[NS] = {0, 16, 32, 48, 64, 81, 97, 113, 129, 145, 161, 177, 193, 209, 226, 242, 258, 274, 290, 306, 322, 338, 354, 371, 387, 403, 419, 435, 451, 467, 483, 499, 516, 532, 548, 564, 580, 596, 612, 628, 644, 661, 677, 693, 709, 725, 741, 757, 773, 789, 806, 822, 838, 854, 870, 886, 902, 918, 934, 951, 967, 983, 999, 1015, 1015, 999, 983, 967, 951, 934, 918, 902, 886, 870, 854, 838, 822, 806, 789, 773, 757, 741, 725, 709, 693, 677, 661, 644, 628, 612, 596, 580, 564, 548, 532, 516, 499, 483, 467, 451, 435, 419, 403, 387, 371, 354, 338, 322, 306, 290, 274, 258, 242, 226, 209, 193, 177, 161, 145, 129, 113, 97, 81, 64, 48, 32, 16, 0};
-
-// TODO: Equation to calculate TIM2_Ticks
-
-uint32_t TIM2_Ticks = TIM2CLK / (F_SIGNAL * NS); // How often to write new LUT value
-uint32_t DestAddress = (uint32_t) &(TIM3->CCR3); // Write LUT TO TIM3->CCR3 to modify PWM duty cycle
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +56,7 @@ static void MX_DMA_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
-void EXTI0_1_IRQHandler(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -107,25 +95,6 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  // TODO: Start TIM3 in PWM mode on channel 3
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-
-
-  // TODO: Start TIM2 in Output Compare (OC) mode on channel 1.
-  HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_1);
-
-  // TODO: Start DMA in IT mode on TIM2->CH1; Source is LUT and Dest is TIM3->CCR3; start with Sine LUT
-  HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
-
-  // TODO: Write current waveform to LCD ("Sine")
-  delay(3000);
-  init_LCD();
-  lcd_putstring("Waveform:");
-  lcd_command(LINE_TWO);
-  lcd_putstring("Sine");
-
-  // TODO: Enable DMA (start transfer from LUT to CCR)
-  __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
 
   /* USER CODE END 2 */
 
@@ -134,6 +103,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  lcd_command(CLEAR);
+	  lcd_command("hey");
 
     /* USER CODE BEGIN 3 */
   }
@@ -348,61 +319,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void EXTI0_1_IRQHandler(void)
-{
-	// TODO: Debounce using HAL_GetTick()
-	static uint32_t lastPress = 0;
-	uint32_t currentPress = HAL_GetTick();
 
-	// TODO: Disable DMA transfer and abort IT, then start DMA in IT mode with new LUT and re-enable transfer
-	// HINT: Consider using C's "switch" function to handle LUT changes
-	if ((currentPress - lastPress) > 200) {  // Debounce (200ms delay)
-		static int currentWave = 0;
-		__HAL_TIM_DISABLE_DMA(&htim2, TIM_DMA_CC1);
-		HAL_DMA_Abort_IT(&hdma_tim2_ch1); // Stop DMA transfer
-
-		// Cycle through the waveforms
-		switch (currentWave) {
-			case 0:
-				delay(3000);
-				lcd_command(CLEAR);
-				lcd_putstring("Waveform:");
-				lcd_command(LINE_TWO);
-				lcd_putstring("Sawtooth");
-				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)saw_LUT, DestAddress, NS);
-				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
-				currentWave = 1;
-				break;
-      
-			  case 1:
-				  delay(3000);
-				  lcd_command(CLEAR);
-				  lcd_putstring("Waveform:");
-				  lcd_command(LINE_TWO);
-				  lcd_putstring("Triangle");
-				  HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)triangle_LUT, DestAddress, NS);
-				  __HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
-				  currentWave = 2;
-			  break;
-
-      default:
-				delay(3000);
-				lcd_command(CLEAR);
-				lcd_putstring("Waveform:");
-				lcd_command(LINE_TWO);
-				lcd_putstring("Sine");
-				HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)Sin_LUT, DestAddress, NS);
-				__HAL_TIM_ENABLE_DMA(&htim2, TIM_DMA_CC1);
-				currentWave = 0;
-				break;
-
-		}
-	}
-
-	lastPress = currentPress;
-
-	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
-}
 
 /* USER CODE END 4 */
 
