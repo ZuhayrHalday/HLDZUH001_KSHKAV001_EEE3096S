@@ -503,7 +503,11 @@ void TIM16_IRQHandler(void)
 // TODO: Complete the writeLCD function
 void writeLCD(char *char_in){
   delay(3000);
-	
+	  delay(3000);
+  lcd_command(CLEAR);
+  lcd_putstring("EEPROM byte:");
+  lcd_command(LINE_TWO);
+  lcd_putstring(char_in);
   
 }
 
@@ -519,8 +523,13 @@ uint32_t pollADC(void){
 // Calculate PWM CCR value
 uint32_t ADCtoCCR(uint32_t adc_val){
   // TODO: Calculate CCR value (val) using an appropriate equation
+	uint32_t val_ccr;
 
-	//return val;
+	//Duty cycle = CRR/ARR, CRR = Duty Cycle * ARR
+	val_ccr = (adc_val * 47999) / 4095;
+
+	return val_ccr;
+	
 }
 
 void ADC1_COMP_IRQHandler(void)
